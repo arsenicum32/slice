@@ -1,0 +1,14 @@
+{
+  "name": "slice",
+  "version": "0.0.1",
+  "description": "backend for slice",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "slice"
+  ],
+  "author": "ars32",
+  "license": "ISC"
+}
