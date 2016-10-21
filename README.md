@@ -54,24 +54,18 @@ title: String,
 desc: String,
 owner: String,
 data: Object,
-yes: Array,
-no: Array,
-referee: String,
+yes: Object, // {uid : ставка}
+no: Object, // {uid : ставка}
+referee: String, // uid рефери
 vote: Object,
-amount: Number,
-win: String,
+amount: Object, // {all : капитализация спора, yes: капитализация yes, no: капитализация no}
+winco: {yes: {type:Object,default:{}}, no: {type:Object,default:{}}},
+win: {type: String, default: 'active'},
 tags: Array,
 deadline: Date,
 time: { type : Date, default: Date.now }
 ```
 
-####party :
-
-```javascript
-members: Object // объект где { uid из коллекции users : его ставка }
-data: Object
-time: { type : Date, default: Date.now }
-```
 
 *но всё это внутреннее api для хардкода...*
 

@@ -22,7 +22,18 @@ var helper = {
 var gets = {
   '/circle': function(req, res){ ////// получить все споры
     m.circle.find({}, function(err,o){
-      res.json(err?{error:err}:o);
+      var arr = [];
+      for(var i in o){
+        arr.push(i);
+      }
+      res.json(err?{error:err}:arr);
+    })
+  },
+  '/circle/:id': function(req , res){
+    m.circle.findById( req.params.id , function(err,o){
+      err?res.json({error: err}):o.count(function(f){
+        res.json(f);
+      });
     })
   },
   '/circle/add/:uid': function(req,res){ ////// создать спор от пользователя
@@ -66,14 +77,14 @@ var gets = {
   '/circle/edit/:id': function(req, res){
     res.json({final:true});
   },
-  '/user/vote/:partyID/:uid/:vote': function(req, res){
-    helper.has(res, m.party , req.params.partyID , function(o){
-      o.members.hasOwnProperty(req.params.uid) ? res.json({error: "vote added yet"}) :
-      o.members[req.params.uid] = req.params.vote;
-      o.save();
-      res.json(o);
-    })
-  },
+  // '/user/vote/:partyID/:uid/:vote': function(req, res){
+  //   helper.has(res, m.party , req.params.partyID , function(o){
+  //     o.members.hasOwnProperty(req.params.uid) ? res.json({error: "vote added yet"}) :
+  //     o.members[req.params.uid] = req.params.vote;
+  //     o.save();
+  //     res.json(o);
+  //   })
+  // },
   '/party/:partyID/amount': function(req, res){
     helper.has(res, m.party , req.params.partyID , function(o){
       o.amount(function(amount){

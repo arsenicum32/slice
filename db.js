@@ -41,12 +41,13 @@ var scheme = {
     desc: String,
     owner: String,
     data: Object,
-    yes: Array,
-    no: Array,
+    yes: Object,
+    no: Object,
     referee: String,
     vote: Object,
-    amount: Number,
-    win: String,
+    amount: Object,
+    winco: {yes: {type:Object,default:{}}, no: {type:Object,default:{}}},
+    win: {type: String, default: 'active'},
     tags: Array,
     deadline: Date,
     time: { type : Date, default: Date.now }
@@ -57,18 +58,38 @@ var scheme = {
 //
 // }
 
-scheme.party.methods.amount = function(callback){
-  var objp = this.members;
-  var amount = 0;
-  for(var i in objp){
-    amount+=parseFloat(objp[i]);
+
+scheme.circle.methods.count = function(callback){
+  var y = this.yes, n = this.no;
+  this.amount = {all:0,yes:0,no:0};
+  for (var i in y){
+    this.amount.all += parseFloat(y[i]);
+    this.amount.yes += parseFloat(y[i]);
   }
-  return callback(amount);
+  for (var i in n){
+    this.amount.all += parseFloat(n[i]);
+    this.amount.no += parseFloat(n[i]);
+  }
+  for(var i in this.yes){
+    this.winco.yes[i] = parseFloat(this.yes[i]) + Math.floor( this.yes[i] / this.amount.yes * this.amount.no ) ;
+  }
+  for(var i in this.no){
+    this.winco.no[i] = parseFloat(this.no[i]) + Math.floor( this.no[i] / this.amount.no * this.amount.yes ) ;
+  }
+  this.save();
+  callback(this);
 }
 
 var users = mongoose.model('Users', scheme.users ),
     circle = mongoose.model('Circle', scheme.circle ),
     party = mongoose.model('Party', scheme.party );
+
+
+    // circle.findOne({} , function(err,o){
+    //   o?o.count(function(ob){
+    //     console.log(ob);
+    //   }):void(0);
+    // });
 
 // party.findOne({}, function(err,o){
 //   o?
