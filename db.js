@@ -35,6 +35,7 @@ var circle = mongoose.model('Circle', {
   data: Object,
   party: Array,
   referee: Array,
+  vote: Object,
   win: String,
   tags: Array,
   deadline: Date,
