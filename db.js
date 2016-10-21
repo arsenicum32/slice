@@ -3,6 +3,8 @@ var mongoose = require('mongoose');
 
 var router = express.Router();
 
+var Schema = mongoose.Schema;
+
 mongoose.connect('mongodb://localhost/slice');
 
 var db = mongoose.connection;
@@ -15,38 +17,64 @@ db.once('open', function callback () {
     console.log('connect to db');
 });
 
-var users = mongoose.model('Users', {
-  uid: {
-    type: String,
-    unique: true,
-    required: true
-  },
-  balance: Number,
-  desc: String,
-  data: Object,
-  time : { type : Date, default: Date.now }
-});
+var scheme = {
+  party: new Schema({
+    members: Object,
+    desc: String,
+    data: Object,
+    time: { type : Date, default: Date.now }
+  }),
+  users: new Schema({
+    uid: {
+      type: String,
+      unique: true,
+      required: true
+    },
+    balance: Number,
+    desc: String,
+    data: Object,
+    time : { type : Date, default: Date.now }
+  }),
+  circle: new Schema({
+    name: String,
+    title: String,
+    desc: String,
+    owner: String,
+    data: Object,
+    party: Array,
+    referee: Array,
+    vote: Object,
+    amount: Number,
+    win: String,
+    tags: Array,
+    deadline: Date,
+    time: { type : Date, default: Date.now }
+  })
+}
 
-var circle = mongoose.model('Circle', {
-  name: String,
-  title: String,
-  desc: String,
-  owner: String,
-  data: Object,
-  party: Array,
-  referee: Array,
-  vote: Object,
-  win: String,
-  tags: Array,
-  deadline: Date,
-  time: { type : Date, default: Date.now }
-});
+// scheme.users.methods.amount = function(callback){
+//
+// }
 
-var party = mongoose.model('Party',{
-  members: Object,
-  data: Object,
-  time: { type : Date, default: Date.now }
-});
+scheme.party.methods.amount = function(callback){
+  var objp = this.members;
+  var amount = 0;
+  for(var i in objp){
+    amount+=parseFloat(objp[i]);
+  }
+  return callback(amount);
+}
+
+var users = mongoose.model('Users', scheme.users ),
+    circle = mongoose.model('Circle', scheme.circle ),
+    party = mongoose.model('Party', scheme.party );
+
+party.findOne({}, function(err,o){
+  o?
+  o.amount(function(t){
+    console.log(t);
+  }):void(0);
+})
 
 var models = {
   'users': users,
@@ -121,4 +149,7 @@ for (var i in gets){
   router.get( i , gets[i]);
 }
 
-module.exports = router;
+module.exports = {
+  r: router,
+  m: models
+};
