@@ -12,7 +12,7 @@ db.on('error', function (err) {
 });
 
 db.once('open', function callback () {
-    console.log('connect to penchat');
+    console.log('connect to db');
 });
 
 var users = mongoose.model('Users', {

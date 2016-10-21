@@ -10,5 +10,11 @@
     "slice"
   ],
   "author": "ars32",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.1",
+    "express": "^4.14.0",
+    "mongoose": "^4.6.4",
+    "request": "^2.75.0"
+  }
 }
