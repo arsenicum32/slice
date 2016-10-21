@@ -8,7 +8,7 @@ var router = express.Router();
 
 var helper = {
   hasusers: function(res, query, callback){ // проверяем, существует ли пользователь в бд
-    m.users.findOne( query, function(err,o){
+    m.users.findOne( {uid: query}, function(err,o){
       err?res.json({error:err}):o?callback(o):res.json({error:"no users found"});
     })
   },
@@ -29,54 +29,87 @@ var gets = {
       res.json(err?{error:err}:arr);
     })
   },
-  '/circle/:id': function(req , res){
+  '/circle/get/:id': function(req , res){
     m.circle.findById( req.params.id , function(err,o){
       err?res.json({error: err}):o.count(function(f){
         res.json(f);
       });
     })
   },
-  '/circle/add/:uid': function(req,res){ ////// создать спор от пользователя
-    helper.hasusers( res, {uid: req.params.uid }, function(o){
+  '/circle/new': function(req,res){ ////// создать спор от пользователя
+    var arr = ['owner', 'referee', 'name' , 'desc'];
+    for(var n in arr){
+      if(!req.query[arr[n]]){
+        res.json({error:"no query "+arr[n]+" passed"});
+        return;
+      }
+    }
+    helper.hasusers( res , req.query.uid , function(o){
       res.json({good:o});
     })
   },
-  '/circle/:circleID/info': function(req,res){
-    helper.has( res, m.circle, req.params.circleID, function(o){
-      var arr = [];
-      for(var i in o.party){
-        helper.has(res, m.party , o.party[i] , function(o){
-
+  '/circle/vote': function(req, res){
+    arr = ['uid', 'vote', 'cid', 'party'];
+    for(var n in arr){
+      if(!req.query[arr[n]]){
+        res.json({error:"no query "+arr[n]+" passed"});
+        return;
+      }
+    }
+    helper.has(res, m.circle, req.query.cid, function(o){
+      if(o.win == 'active'){
+        helper.hasusers( res , req.query.uid , function(u){
+          if(req.query.party=='yes'){
+            o.yes[req.query.uid] = req.query.vote;
+            o.save();
+            res.json(o);
+          }else{
+            o.no[req.query.uid] = req.query.vote;
+            o.save();
+            res.json(o);
+          }
         })
-      }
-      res.json({
-        amount: 0
-      })
-    })
-  },
-  '/circle/:circleID/referee/:op/:uid': function(req,res){
-    helper.has(res , m.circle , req.params.circleID , function(o){
-      if(req.params.op == 'add'){
-        o.referee.push(req.params.uid);
-        o.save();
-        res.json(o);
       }else{
-        res.json({bad:o});
+        res.json({error: "circle unactive"});
       }
     })
-  },
-  '/circle/:circleID/party': function(req, res){
-    res.json({final:true});
-  },
-  '/circle/addparty/:id': function(req, res){
-    res.json({final:true});
-  },
-  '/circle/remparty/:id': function(req, res){
-    res.json({final:true});
-  },
-  '/circle/edit/:id': function(req, res){
-    res.json({final:true});
-  },
+  }
+  // '/circle/:circleID/info': function(req,res){
+  //   helper.has( res, m.circle, req.params.circleID, function(o){
+  //     var arr = [];
+  //     for(var i in o.party){
+  //       helper.has(res, m.party , o.party[i] , function(o){
+  //
+  //       })
+  //     }
+  //     res.json({
+  //       amount: 0
+  //     })
+  //   })
+  // },
+  // '/circle/:circleID/referee/:op/:uid': function(req,res){
+  //   helper.has(res , m.circle , req.params.circleID , function(o){
+  //     if(req.params.op == 'add'){
+  //       o.referee.push(req.params.uid);
+  //       o.save();
+  //       res.json(o);
+  //     }else{
+  //       res.json({bad:o});
+  //     }
+  //   })
+  // },
+  // '/circle/:circleID/party': function(req, res){
+  //   res.json({final:true});
+  // },
+  // '/circle/addparty/:id': function(req, res){
+  //   res.json({final:true});
+  // },
+  // '/circle/remparty/:id': function(req, res){
+  //   res.json({final:true});
+  // },
+  // '/circle/edit/:id': function(req, res){
+  //   res.json({final:true});
+  // },
   // '/user/vote/:partyID/:uid/:vote': function(req, res){
   //   helper.has(res, m.party , req.params.partyID , function(o){
   //     o.members.hasOwnProperty(req.params.uid) ? res.json({error: "vote added yet"}) :
@@ -85,13 +118,6 @@ var gets = {
   //     res.json(o);
   //   })
   // },
-  '/party/:partyID/amount': function(req, res){
-    helper.has(res, m.party , req.params.partyID , function(o){
-      o.amount(function(amount){
-        res.json({amount: amount});
-      })
-    })
-  }
 }
 
 

@@ -62,6 +62,7 @@ var scheme = {
 scheme.circle.methods.count = function(callback){
   var y = this.yes, n = this.no;
   this.amount = {all:0,yes:0,no:0};
+  this.winco.yes = {}, this.winco.no = {};
   for (var i in y){
     this.amount.all += parseFloat(y[i]);
     this.amount.yes += parseFloat(y[i]);
