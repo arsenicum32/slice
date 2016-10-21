@@ -24,7 +24,7 @@ var gets = {
     m.circle.find({}, function(err,o){
       var arr = [];
       for(var i in o){
-        arr.push(i);
+        arr.push(o[i].id);
       }
       res.json(err?{error:err}:arr);
     })
