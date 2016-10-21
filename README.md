@@ -49,17 +49,19 @@ http://85.143.209.210:20000/circle/all
 ####circle :
 
 ```javascript
-name: String // имя спора
-title: String // титл.. логично
-desc: String // описание
-owner: String // uid создателя
-data: Object
-party: Array // массив id из коллекции party
-vote: Object // объект где { uid рефери из коллекции users : выбор победителя (id из party) }
-referee: Array // массив uid рефери из коллекции users
-win: String, // id победителя из коллекции party
-tags: Array, // теги спора
-deadline: Date, // дата завершения
+name: String,
+title: String,
+desc: String,
+owner: String,
+data: Object,
+yes: Array,
+no: Array,
+referee: String,
+vote: Object,
+amount: Number,
+win: String,
+tags: Array,
+deadline: Date,
 time: { type : Date, default: Date.now }
 ```
 
@@ -72,3 +74,7 @@ time: { type : Date, default: Date.now }
 ```
 
 *но всё это внутреннее api для хардкода...*
+
+## дополнительное API
+
+получить

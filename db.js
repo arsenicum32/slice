@@ -41,8 +41,9 @@ var scheme = {
     desc: String,
     owner: String,
     data: Object,
-    party: Array,
-    referee: Array,
+    yes: Array,
+    no: Array,
+    referee: String,
     vote: Object,
     amount: Number,
     win: String,
@@ -69,17 +70,17 @@ var users = mongoose.model('Users', scheme.users ),
     circle = mongoose.model('Circle', scheme.circle ),
     party = mongoose.model('Party', scheme.party );
 
-party.findOne({}, function(err,o){
-  o?
-  o.amount(function(t){
-    console.log(t);
-  }):void(0);
-})
+// party.findOne({}, function(err,o){
+//   o?
+//   o.amount(function(t){
+//     console.log(t);
+//   }):void(0);
+// })
 
 var models = {
   'users': users,
-  'circle': circle,
-  'party': party
+  'circle': circle
+  //'party': party
 }
 
 var gets = {

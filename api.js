@@ -46,7 +46,9 @@ var gets = {
   '/circle/:circleID/referee/:op/:uid': function(req,res){
     helper.has(res , m.circle , req.params.circleID , function(o){
       if(req.params.op == 'add'){
-        res.json({good:o});
+        o.referee.push(req.params.uid);
+        o.save();
+        res.json(o);
       }else{
         res.json({bad:o});
       }
@@ -64,8 +66,13 @@ var gets = {
   '/circle/edit/:id': function(req, res){
     res.json({final:true});
   },
-  '/user/vote/:partyID/:id': function(req, res){
-    res.json({final:true});
+  '/user/vote/:partyID/:uid/:vote': function(req, res){
+    helper.has(res, m.party , req.params.partyID , function(o){
+      o.members.hasOwnProperty(req.params.uid) ? res.json({error: "vote added yet"}) :
+      o.members[req.params.uid] = req.params.vote;
+      o.save();
+      res.json(o);
+    })
   },
   '/party/:partyID/amount': function(req, res){
     helper.has(res, m.party , req.params.partyID , function(o){
