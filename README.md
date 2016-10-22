@@ -1,81 +1,126 @@
-#slice rest API
+# React-Stylus-Webpack boilerplate
+An opinionated starter kit for creating applications using react and stylus, client side rendering, development and production configurations and hot reloading
 
-Написанна на изи очень легко масштабируется и переиспользуется...
+Tecnology stack:
+* Plain react (for now), no flux implementation in order to keep it simple (maybe create a fork later for redux/reflux/plain flux)
+* `react-router` for handling routes
+* Client side rendering (leaving isomorphic rendering for later)
+* ES6 with Babel
+* `Stylus` preprocessor for styles
+* `react-jade-loader` for using jade templates instead of JSX
+* Scoped styles using `css-modules` => http://glenmaddern.com/articles/css-modules
+* `gulp` for build automation
+* `eslint` for coding style enforcement
+* `webpack` for development and production bundling
+* `webpack-dev-server` for running locally, with hot reloading (styles, jsx, images, files)
 
-!!!всё GET :metal:
+You can check a running version here: https://alejofernandez.github.io/react-stylus-webpack-boilerplate
+![react-stylus-webpack-boilerplate](https://cloud.githubusercontent.com/assets/1288192/11636862/0db1255e-9cfd-11e5-90f5-a02b229613aa.png)
 
-Итак.. У нас есть три коллекции:
+## How to use this starter kit
 
-`users` `party` `circle`
+### Install local modules
+* `npm install`
 
-проверить их наличие можно здесь:
+### To run locally
+* `npm run serve`
+* `open http://localhost:3000`
 
-```javascript
-http://85.143.209.210:20000/api
+### To build distributable files
+* `npm run build`
+
+### To deploy to github pages
+* `npm run deploy`
+* `open http://<your-github-account>.github.io/<your-repo-name>`
+
+## About this boilerplate
+#### Folder structure:
+```
+|- src
+|   |- theme               // Theme definition stuff goes here, a base css framework (i.e. bootstrap)
+|   |   |- framework.css   // overrides, mixins, variables
+|   |   |- mixins.styl
+|   |   |- variables.styl
+|   |   |- helpers.styl
+|   |   |- overrides.styl
+|   |   |- base.styl       // Base file with all the includes
+|   |   \- theme.styl      // Main theme file with global styles
+|   |
+|   |- components          // Dumb reusable components
+|   |   |- Header
+|   |   |- Footer
+|   |   |   |- Footer.styl // Specific footer styles, includes common definition from './theme'
+|   |   |   \- Footer.jsx  // Component logic
+|   |   |
+|   |   \- index.js
+|   |
+|   |- containers          // Complex views (smart components, pages, layouts)
+|   |   |- Home
+|   |   |   |- Home.styl   // Specific home styles, includes common definition from './theme'
+|   |   |   \- Home.jsx    // Component logic
+|   |   |- About
+|   |   |
+|   |   \- index.js
+|   |
+|   |- routes.js           // Routes for the application
+|   \- index.js            // Entry point for the application
+|
+\-[build and configuration files]
 ```
 
-Для каждой коллекции (будем использовать [:model]) есть методы:
-
+#### Sample container (smart component):
 ```javascript
-//взять все записи
-http://85.143.209.210:20000/:model/all?query
-//взять запись по id
-http://85.143.209.210:20000/:model/get/:id
-//добавить запись
-http://85.143.209.210:20000/:model/add?query
-//апдейтнуть запись по id из query строки
-http://85.143.209.210:20000/:model/upd/:id?query
-//удалить запись по id
-http://85.143.209.210:20000/:model/rem/:id
-```
-Пример:
+// src/containers/App/App.js
+import styles from './App.styl';
+import React from 'react';
+import { Footer, Header, Navbar } from '../../components';
 
-```javascript
-http://85.143.209.210:20000/circle/all
-```
+const App = (props) => (
+  <section id="application">
+    <Header />
+    <div className={styles.container}>
+      <Navbar />
+      <div className={styles.content}>
+        {props.children}
+      </div>
+    </div>
+    <Footer />
+  </section>
+);
 
-###Теперь что есть что:
+App.propTypes = {
+  children: React.PropTypes.node
+};
 
-####users :
-
-```javascript
-  uid: String // его id полученный от банка открытия при регистрации
-  balance: Number // баланс пользователя
-  desc: String // описание в профиле
-  data: Object // эта штука есть в каждой коллекции на всякий случай
-  time : время системное
+export default App;
 ```
 
-####circle :
-
+#### Sample component (dumb component):
 ```javascript
-name: String,
-title: String,
-desc: String,
-owner: String,
-data: Object,
-yes: Object, // {uid : ставка}
-no: Object, // {uid : ставка}
-referee: String, // uid рефери
-vote: Object,
-amount: Object, // {all : капитализация спора, yes: капитализация yes, no: капитализация no}
-winco: {yes: {type:Object,default:{}}, no: {type:Object,default:{}}},
-win: {type: String, default: 'active'},
-tags: Array,
-deadline: Date,
-time: { type : Date, default: Date.now }
+// src/components/Header/Header.js
+import styles from './Header.styl';
+import React from 'react';
+
+const Header = () => (
+  <header className={styles.header}>
+    <h1><a href="#/">React Stylus Webpack boilerplate</a></h1>
+    <h2>A starter kit for creating applications using react and stylus</h2>
+    <a className={styles.stylusLogo} href="https://learnboost.github.io/stylus/"></a>
+    <a className={styles.reactLogo} href="https://facebook.github.io/react/"></a>
+  </header>
+);
+
+export default Header;
 ```
 
+#### Sample style file:
+```css
+// src/components/Header/Header.styl
+@import "../../theme/base"
 
-*но всё это внутреннее api для хардкода...*
-
-## дополнительное API
-
-Сделать ставку:
-
-`/circle/vote` с query `['uid' = uid пользователя, 'vote' = колличество денег, 'cid' = id спора, 'party' = yes или no]`
-
-
-Создать спор:
-
-`/circle/new` c query `['owner' = uid владельца, 'referee' = uid рефери, 'name' = имя , 'desc' = описание]`
+.header
+  background-color: get-deep-orange()
+  color: get-white()
+  padding: 60px 20px 50px 110px
+  position: relative
+```
