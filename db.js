@@ -53,10 +53,6 @@ var scheme = {
   })
 }
 
-// scheme.users.methods.amount = function(callback){
-//
-// }
-
 
 scheme.circle.methods.count = function(callback){
   var y = this.yes, n = this.no;
@@ -83,7 +79,6 @@ scheme.circle.methods.count = function(callback){
 var users = mongoose.model('Users', scheme.users ),
     circle = mongoose.model('Circle', scheme.circle ),
     party = mongoose.model('Party', scheme.party );
-
 
     // circle.findOne({} , function(err,o){
     //   o?o.count(function(ob){

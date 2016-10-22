@@ -69,6 +69,19 @@ var gets = {
       });
     })
   },
+  '/circle/close': function(req,res){
+    var arr = ['cid', 'win'];
+    for(var n in arr){
+      if(!req.query[arr[n]]){
+        res.json({error:"no query "+arr[n]+" passed"});
+        return;
+      }
+    }
+    helper.has( res , m.circle, req.query.cid , function(o){
+      o.win = req.query.win == 'yes' ? 'yes' : 'no';
+      res.send({sucsess: o.save() });
+    })
+  },
   '/circle/new': function(req,res){ ////// создать спор от пользователя
     var arr = ['owner', 'referee', 'name' , 'desc'];
     for(var n in arr){
@@ -95,9 +108,12 @@ var gets = {
     helper.has(res, m.circle, req.query.cid, function(o){
       if(o.win == 'active'){
         helper.hasusers( res , req.query.uid , function(u){
-            o[req.query.party][ req.query.uid ] = parseFloat(req.query.vote) ;
-            o.save();
-            res.json(o);
+          if(o[req.query.party]){
+            o[req.query.party][ req.query.uid ] = parseFloat(req.query.vote);
+            res.json(o.save());
+          }else{
+            res.json({error: "runtime error"});
+          }
         })
       }else{
         res.json({error: "circle unactive"});
