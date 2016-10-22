@@ -12,4 +12,4 @@ app.all('*', function(req,res){
   res.json({error:404});
 })
 
-app.listen(20000);
+app.listen(8080);
