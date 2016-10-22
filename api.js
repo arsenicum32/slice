@@ -57,7 +57,10 @@ var gets = {
       }
     }
     helper.hasusers( res , req.query.owner , function(o){
-      res.json({good:o});
+      var nc = new m.circle(req.query);
+      nc.save(function(err){
+        err?res.json({error: err}):res.json({good:o});
+      })
     })
   },
   '/circle/vote': function(req, res){

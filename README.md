@@ -71,4 +71,11 @@ time: { type : Date, default: Date.now }
 
 ## дополнительное API
 
-получить
+Сделать ставку:
+
+`/circle/vote` с query `['uid' = uid пользователя, 'vote' = колличество денег, 'cid' = id спора, 'party' = yes или no]`
+
+
+Создать спор:
+
+`/circle/new` c query `['owner' = uid владельца, 'referee' = uid рефери, 'name' = имя , 'desc' = описание]`
