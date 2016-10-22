@@ -5,7 +5,7 @@ var router = express.Router();
 
 var Schema = mongoose.Schema;
 
-mongoose.connect('mongodb://localhost/slice');
+mongoose.connect('mongodb://slice:slice@ds063856.mlab.com:63856/slice');
 
 var db = mongoose.connection;
 
