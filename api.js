@@ -95,15 +95,9 @@ var gets = {
     helper.has(res, m.circle, req.query.cid, function(o){
       if(o.win == 'active'){
         helper.hasusers( res , req.query.uid , function(u){
-          if(req.query.party=='yes'){
-            o.yes[req.query.uid] = req.query.vote;
+            o[req.query.party][ req.query.uid ] = parseFloat(req.query.vote) ;
             o.save();
             res.json(o);
-          }else{
-            o.no[req.query.uid] = req.query.vote;
-            o.save();
-            res.json(o);
-          }
         })
       }else{
         res.json({error: "circle unactive"});
