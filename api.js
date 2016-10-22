@@ -32,9 +32,7 @@ var gets = {
   '/circle/get': function(req , res){
     if(req.query.owner){
       m.circle.find( {owner: req.params.owner} , function(err,o){
-        err?res.json({error: err}):o.count(function(f){
-          res.json(f);
-        });
+        err?res.json({error: err}):res.json(o);
       })
     }else{
       req.json({error: "no owner query passed"});
