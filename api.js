@@ -19,7 +19,28 @@ var helper = {
   }
 }
 
+function IsJsonString(str) {
+    try {
+        JSON.parse(str);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
 var gets = {
+  '/:md/find': function(req, res){
+    IsJsonString(req.query.ask) ?
+    m[req.params.md].find( JSON.parse(req.query.ask) , function(err,o){
+      err?res.json({error:err}):o?res.json(o):res.json({error:"no " + 'users' + " found"});
+    }): res.json({error: "can't parseJSON ask"});
+  },
+  '/:md/findone': function(req, res){
+    IsJsonString(req.query.ask) ?
+    m[req.params.md].findOne( JSON.parse(req.query.ask) , function(err,o){
+      err?res.json({error:err}):o?res.json(o):res.json({error:"no " + 'users' + " found"});
+    }): res.json({error: "can't parseJSON ask"});
+  },
   '/users/new': function(req , res){
     res.json({good: true});
   },
@@ -89,50 +110,6 @@ var gets = {
       }
     })
   }
-  // '/circle/:circleID/info': function(req,res){
-  //   helper.has( res, m.circle, req.params.circleID, function(o){
-  //     var arr = [];
-  //     for(var i in o.party){
-  //       helper.has(res, m.party , o.party[i] , function(o){
-  //
-  //       })
-  //     }
-  //     res.json({
-  //       amount: 0
-  //     })
-  //   })
-  // },
-  // '/circle/:circleID/referee/:op/:uid': function(req,res){
-  //   helper.has(res , m.circle , req.params.circleID , function(o){
-  //     if(req.params.op == 'add'){
-  //       o.referee.push(req.params.uid);
-  //       o.save();
-  //       res.json(o);
-  //     }else{
-  //       res.json({bad:o});
-  //     }
-  //   })
-  // },
-  // '/circle/:circleID/party': function(req, res){
-  //   res.json({final:true});
-  // },
-  // '/circle/addparty/:id': function(req, res){
-  //   res.json({final:true});
-  // },
-  // '/circle/remparty/:id': function(req, res){
-  //   res.json({final:true});
-  // },
-  // '/circle/edit/:id': function(req, res){
-  //   res.json({final:true});
-  // },
-  // '/user/vote/:partyID/:uid/:vote': function(req, res){
-  //   helper.has(res, m.party , req.params.partyID , function(o){
-  //     o.members.hasOwnProperty(req.params.uid) ? res.json({error: "vote added yet"}) :
-  //     o.members[req.params.uid] = req.params.vote;
-  //     o.save();
-  //     res.json(o);
-  //   })
-  // },
 }
 
 
