@@ -56,7 +56,7 @@ var gets = {
         return;
       }
     }
-    helper.hasusers( res , req.query.uid , function(o){
+    helper.hasusers( res , req.query.owner , function(o){
       res.json({good:o});
     })
   },
