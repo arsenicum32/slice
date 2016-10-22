@@ -29,6 +29,17 @@ var gets = {
       res.json(err?{error:err}:arr);
     })
   },
+  '/circle/get': function(req , res){
+    if(req.query.owner){
+      m.circle.find( {owner: req.params.owner} , function(err,o){
+        err?res.json({error: err}):o.count(function(f){
+          res.json(f);
+        });
+      })
+    }else{
+      req.json({error: "no owner query passed"});
+    }
+  },
   '/circle/get/:id': function(req , res){
     m.circle.findById( req.params.id , function(err,o){
       err?res.json({error: err}):o.count(function(f){
