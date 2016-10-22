@@ -30,7 +30,7 @@ var scheme = {
       unique: true,
       required: true
     },
-    balance: Number,
+    balance: {type: Number, default: 0 },
     desc: String,
     data: Object,
     time : { type : Date, default: Date.now }

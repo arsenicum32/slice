@@ -20,6 +20,9 @@ var helper = {
 }
 
 var gets = {
+  '/users/new': function(req , res){
+    res.json({good: true});
+  },
   '/circle': function(req, res){ ////// получить все споры
     m.circle.find({}, function(err,o){
       var arr = [];
