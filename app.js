@@ -7,6 +7,7 @@ app.use(cors());
 
 app.use('/', require('./db').r );
 app.use('/api', require('./api') );
+app.use('/test', require('./test') );
 
 app.all('*', function(req,res){
   res.json({error:404});
