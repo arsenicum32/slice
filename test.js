@@ -1,4 +1,3 @@
-'use strict';
 var express = require('express');
 var request = require('request');
 var mongoose = require('mongoose');
@@ -31,16 +30,10 @@ var gets = {
     w('[')
 
     for(var i=1000 + rdn(2000) ;i>100 + rdn(200); i= i - rdn() ){
-      w(`{
-        "size": ${i},
-        "id": ${rdn(200000000)}
-      },`);
+      w("{"+'"size": '+i+',"id": '+rdn(200000000)+"},");
     }
 
-    w(`{
-        "size": ${i},
-        "id": ${rdn(200000000)}
-      }]`);
+    w("{"+'"size": '+i+',"id": '+rdn(200000000)+"}]");
 
     res.json(JSON.parse(rs));
   }
