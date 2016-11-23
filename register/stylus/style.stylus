@@ -1,0 +1,46 @@
+body
+  overflow hidden
+  font-family Gill Sans
+  display flex
+  align-items center
+  justify-content center
+  height 100vh
+#c
+  position absolute
+  top 0
+  left 0
+  opacity .75
+.block
+  width 50vw
+  height 200px
+  max-width 400px
+  min-width 300px
+  text-align center
+  z-index 10
+  h1
+    font-weight normal
+    letter-spacing 0.5em
+    b
+      font-weight 800
+  span
+    font-weight lighter
+  input
+    font-family Gill Sans
+    font-weight lighter
+    border 2px solid #eee
+    line-height 16px
+    border-radius 16px
+    padding-left 10px
+    margin 2px
+    outline none
+  a
+    margin 8px
+    margin-top 40px
+    padding 16px
+    border-radius 60px
+    line-height 60px
+    background #f33
+    color white
+    text-decoration none
+    font-weight 800
+  
