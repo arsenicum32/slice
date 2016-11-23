@@ -1,23 +1,41 @@
 {
-  "name": "slice",
-  "version": "0.0.1",
-  "description": "backend for slice",
+  "name": "projectslice",
+  "version": "1.0.0",
+  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "nodemon app.js --exec babel-node"
   },
-  "keywords": [
-    "slice"
-  ],
-  "author": "ars32",
+  "author": "",
   "license": "ISC",
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.18.2",
+    "babel-loader": "^6.2.7",
+    "babel-polyfill": "^6.16.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0",
+    "nodemon": "^1.11.0",
+    "react": "^15.3.2",
+    "react-dom": "^15.3.2",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0",
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-hot-middleware": "^2.13.2"
+  },
   "dependencies": {
-    "cors": "^2.8.1",
+    "axios": "^0.15.2",
+    "babel-plugin-transform-object-rest-spread": "^6.19.0",
+    "body-parser": "^1.15.2",
+    "css-loader": "^0.25.0",
     "express": "^4.14.0",
-    "express-winston": "^2.0.0",
-    "mongoose": "^4.6.4",
-    "request": "^2.75.0",
-    "winston": "^2.2.0"
+    "extract-text-webpack-plugin": "^1.0.1",
+    "mongoose": "^4.6.8",
+    "react-select": "^1.0.0-rc.2",
+    "redux-form": "^6.2.0",
+    "style-loader": "^0.13.1",
+    "web3": "^0.17.0-beta"
   }
 }
