@@ -37,9 +37,21 @@ app.get('/dispute/options/:name', (req, res) => {
 
 app.post('/dispute/add', (req, res) => {
   console.log(req.body);
-  let disputeAdd = new disputeModel(Object.assign(req.body, {complete: false}));
+  let referees = req.body.referee.map(elem => {
+    return elem.id;
+  });
+  let disputeAdd = new disputeModel(Object.assign(req.body, {complete: false, referee: referees}));
   disputeAdd.save((err, disputeAdd) => {
     if(err) console.log(err);
     res.status = 200;
   })
+});
+
+app.get('/dispute/all', (req, res) => {
+  disputeModel.find({}).populate('referee').exec((err, dispute) => {
+    if(err) console.log(err);
+    let result = JSON.stringify(dispute);
+    console.log(result);
+    res.json(result);
+  });
 });

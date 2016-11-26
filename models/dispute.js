@@ -14,7 +14,7 @@ let disputeSchema = new SchemaDispute({
   },
   timer: Date,
   referee: {
-    type: Array
+    type: [{type: mongoose.Schema.Types.ObjectId, ref: 'user'}]
   },
   complete: {
     type: Boolean,

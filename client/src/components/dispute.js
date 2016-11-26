@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Field, reduxForm } from 'redux-form';
-import Select, {Creatable} from 'react-select';
+import Select, { Creatable } from 'react-select';
 import axios from 'axios';
 
 const getOptions = (value) => {
@@ -8,7 +8,7 @@ const getOptions = (value) => {
       return (axios.get('/dispute/options/' + value)
       .then((response) => {
         let options = response.data.map((user) => {
-          let option = Object.assign({}, {value: user.username, label: user.username})
+          let option = Object.assign({}, {value: user.username, label: user.username, id: user._id})
             return option;
         });
         return options;
