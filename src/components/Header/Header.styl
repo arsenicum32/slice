@@ -1,59 +1,41 @@
-@import "../../theme/base"
+headers = 40px
+fsize = 2.2
 
 .header
-  background-color: get-deep-orange()
-  color: get-white()
-  padding: 60px 20px 50px 110px
-  position: relative
-
-  h1
-    margin: 0
-    font-size: 44px
-    font-weight: 600
-    font-style: italic
-
-    a
-      color: get-white()
-      &:hover
-        color: get-white()
-      &:before
-        content: ""
-        position: absolute
-        display: inline-block
-        left: 0px
-        top: 45px
-        width: 100px
-        height: 80px
-        background: url("./images/js-logo.png") right center no-repeat
-        background-size: auto 100%
-
-  h2
-    margin: 12px 0 0 3px
-    font-size: 24px
-    font-weight: 100
-
-a.stylusLogo
-  position: absolute
-  display: inline-block
-  right: 20px
-  bottom: 10px
-  &:before
-    content: ""
-    display: inline-block
-    width: 60px
-    height: 60px
-    background: url("./images/stylus-logo.png") right center no-repeat
-    background-size: auto 100%
-
-a.reactLogo
-  position: absolute
-  display: inline-block
-  right: 90px
-  bottom: 10px
-  &:before
-    content: ""
-    display: inline-block
-    width: 60px
-    height: 60px
-    background: url("./images/react-logo.png") right center no-repeat
-    background-size: auto 100%
+  display inline-block
+  width 100vw
+  height headers
+  background #f3f3f3
+  font-size unit(fsize,em)
+.sm
+  font-weight lighter
+  font-size unit(fsize/4,em)
+  margin 10px
+  &:after
+    font-weight bolder
+    font-size unit(fsize,em)
+    content ' / '
+.menu
+  float right
+.logo
+  float left
+  font-weight normal
+  margin-left 20px
+  letter-spacing unit(fsize/10,em)
+  line-height headers
+  b
+    font-weight 800
+a
+  line-height headers
+  text-decoration none
+input
+  font-size unit(fsize/2.5,em)
+  font-family Gill Sans
+  font-weight lighter
+  border 2px solid #eee
+  line-height 16px
+  border-radius 16px
+  padding-left 10px
+  margin 2px
+  margin-right 20px
+  outline none

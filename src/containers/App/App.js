@@ -1,12 +1,11 @@
 import styles from './App.styl';
 import React from 'react';
-import { Footer, Header, Navbar } from '../../components';
+import { Footer, Header } from '../../components';
 
 const App = (props) => (
   <section id="application">
     <Header />
     <div className={styles.container}>
-      <Navbar />
       <div className={styles.content}>
         {props.children}
       </div>
