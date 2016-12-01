@@ -43,6 +43,9 @@ export default {
   },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
-    new HtmlWebpackPlugin({ template: 'src/index.html', inject: 'body' })
+    new HtmlWebpackPlugin({ template: 'src/index.html', inject: 'body' }),
+    new webpack.ProvidePlugin({
+        d32: 'd3'
+    })
   ]
 };
