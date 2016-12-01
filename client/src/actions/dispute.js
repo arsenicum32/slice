@@ -1,14 +1,22 @@
-import axios from 'axios';
-
-export function fetchDispute() {
-  const request = axios.get('/dispute/all');
-  return (dispatch) => {
-    request.then(data => {
-      return dispatch({type: 'FETCH_DISPUTE', payload: data});
-    }
-  );
- };
+export function fetchDispute(data) {
+  return {
+    type: 'FETCH_DISPUTE',
+    data
+  }
 };
+
+
+// import axios from 'axios';
+//
+// export function fetchDispute() {
+//   const request = axios.get('/dispute/all');
+//   return (dispatch) => {
+//     request.then(data => {
+//       return dispatch({type: 'FETCH_DISPUTE', payload: data});
+//     }
+//   );
+//  };
+// };
 
 
 // Functionality for future

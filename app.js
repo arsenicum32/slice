@@ -9,7 +9,10 @@ import userModel from './models/users';
 import bodyParser from 'body-parser';
 import disputeModel from './models/dispute';
 
-const app = express();
+var app = require('express')();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+server.listen(80);
 
 const compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
@@ -23,6 +26,17 @@ app.use(express.static(__dirname + '/client/src'));
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json())
 
+// sockets
+io.on('connection', function (socket) {
+    disputeModel.find({}).populate('referee').exec((err, dispute) => {
+        if(err) console.log(err);
+        let result = dispute;
+        console.log(result);
+        socket.emit('fetch', result);
+      })
+});
+
+// routers
 
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/src/index.html'));
@@ -47,11 +61,11 @@ app.post('/dispute/add', (req, res) => {
   })
 });
 
-app.get('/dispute/all', (req, res) => {
-  disputeModel.find({}).populate('referee').exec((err, dispute) => {
-    if(err) console.log(err);
-    let result = JSON.stringify(dispute);
-    console.log(result);
-    res.json(result);
-  });
-});
+// app.get('/dispute/all', (req, res) => {
+//   disputeModel.find({}).populate('referee').exec((err, dispute) => {
+//     if(err) console.log(err);
+//     let result = JSON.stringify(dispute);
+//     console.log(result);
+//     res.json(result);
+//   });
+// });

@@ -17,6 +17,11 @@ const createDispute = (state, action) => {
 
 const byId = (state = {}, action) => {
   switch (action.type) {
+    case 'FETCH_DISPUTE':
+      return {
+        ...state,
+        ...action.data.entities.disputes
+      }
     case 'ADD_DISPUTE':
       return {
         ...state,
@@ -29,6 +34,8 @@ const byId = (state = {}, action) => {
 
 const allIds = (state = [], action) => {
   switch (action.type) {
+    case 'FETCH_DISPUTE':
+      return [...state, action.data.result]
     case 'ADD_DISPUTE':
       return [...state, action.id];
     default:
