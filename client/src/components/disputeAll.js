@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 
 class DisputeAll extends Component{
+  componentDidMount(){
+  this.props.disputeActions.fetchDispute();
+  }
   render() {
-    let data = this.props.route.data
-    data = JSON.stringify(data);
-    console.log(data);
     return <div>
       <pre>
-        {data}
+        {this.data}
       </pre>
     </div>
   }

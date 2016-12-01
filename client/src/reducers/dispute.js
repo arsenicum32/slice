@@ -4,12 +4,12 @@ const createDispute = (state, action) => {
   switch (action.type) {
     case 'ADD_DISPUTE':
       return {
-        id: action.id,
-        disc: action.disc,
-        sides: action.sides,
-        timer: action.timer,
-        referee: action.referee,
-        complete: action.complete
+        id: action.payload.id,
+        discription: action.payload.discription,
+        sides: action.payload.sides,
+        timer: action.payload.timer,
+        referee: action.payload.referee,
+        complete: action.payload.complete
       }
     default: return state;
   }
@@ -19,7 +19,8 @@ const byId = (state = {}, action) => {
   switch (action.type) {
     case 'ADD_DISPUTE':
       return {
-
+        ...state,
+        [action.id]: createDispute(state[action.id], action)
       }
     default: return state;
 

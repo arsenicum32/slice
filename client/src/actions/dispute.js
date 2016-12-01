@@ -1,3 +1,16 @@
+import axios from 'axios';
+
+export function fetchDispute() {
+  const request = axios.get('/dispute/all');
+  return (dispatch) => {
+    request.then(data => {
+      return dispatch({type: 'FETCH_DISPUTE', payload: data});
+    }
+  );
+ };
+};
+
+
 // Functionality for future
 //
 // export default function addDispute(name, disc, sides, timer, referee, complete) {
@@ -11,15 +24,3 @@
 //     complete
 //   }
 // };
-
-import axios from 'axios';
-
-export function fetchDispute(data) {
-  const request = axios.post('/add');
-
-  return (dispatch) => {
-    request.then({data}) => {
-      dispatch({type: ''})
-    }
-  }
-}

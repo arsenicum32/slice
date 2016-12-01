@@ -17,7 +17,7 @@ render(
     <Router history={history} >
       <Route path="/" component={App} >
         <IndexRoute component={Dispute} />
-        <Route path="/dispute" component={DisputeAll} data={{username: "admin"}} />
+        <Route path="/dispute" component={DisputeAll} />
       </Route>
     </Router>
   </Provider>,
