@@ -7,7 +7,7 @@ const arrayOfDisputes = arrayOf(dispute);
 
 class DisputeAll extends Component{
   componentDidMount(){
-    const socket = io.connect('http://localhost:8080');
+    const socket = io.connect('http://localhost');
     socket.on('fetch', (data) => {
       data = normalize(data, arrayOfDisputes);
       console.log(data);
