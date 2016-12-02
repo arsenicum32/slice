@@ -12,13 +12,13 @@ import disputeModel from './models/dispute';
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-server.listen(80);
+server.listen(8081);
 
 const compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 
-app.listen(3000, ()=>{
+app.listen(1337, ()=>{
   console.log('Server started on port 3000');
 });
 
@@ -28,6 +28,7 @@ app.use(bodyParser.json())
 
 // sockets
 io.on('connection', function (socket) {
+  console.log('connection');
     disputeModel.find({}).populate('referee').exec((err, dispute) => {
         if(err) console.log(err);
         let result = dispute;
@@ -56,16 +57,21 @@ app.post('/dispute/add', (req, res) => {
   });
   let disputeAdd = new disputeModel(Object.assign(req.body, {complete: false, referee: referees}));
   disputeAdd.save((err, disputeAdd) => {
-    if(err) console.log(err);
-    res.status = 200;
+    if(err) {
+      console.log(err);
+      res.send("error");
+    }else{
+      res.send("");
+      res.status = 200;
+    }
   })
 });
 
-// app.get('/dispute/all', (req, res) => {
-//   disputeModel.find({}).populate('referee').exec((err, dispute) => {
-//     if(err) console.log(err);
-//     let result = JSON.stringify(dispute);
-//     console.log(result);
-//     res.json(result);
-//   });
-// });
+app.get('/dispute/all', (req, res) => {
+  disputeModel.find({}).populate('referee').exec((err, dispute) => {
+    if(err) console.log(err);
+    let result = JSON.stringify(dispute);
+    console.log(result);
+    res.json(result);
+  });
+});
