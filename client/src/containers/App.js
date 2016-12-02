@@ -22,7 +22,7 @@ class App extends Component {
     return <div>
       <h1>Navbar might be here</h1>
       < Header />
-      <div>{React.cloneElement(this.props.children, {...this.props, actions: disputeActions.fetchDispute, dispute: dispute})}</div>
+      <div>{React.cloneElement(this.props.children, {...this.props, actions: disputeActions.fetchDispute, dispute: dispute, onSubmit: this.handleSubmit})}</div>
     </div>
   }
 };

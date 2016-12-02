@@ -15,15 +15,14 @@ class DisputeAll extends Component{
     });
   }
   render() {
+    console.log(this.props.dispute);
     return (
       <div>
         <ul>
         {
             this.props.dispute.allIds.map((t, id) => {
-              const dispute = JSON.stringify(this.props.dispute.byId[t]);
-              return <li key={id}>
-                  <pre>{dispute}</pre>
-                </li>
+              let result = JSON.stringify(this.props.dispute.byId[t]);
+              return <li key={id}><pre>{result}</pre></li>
             })
         }
       </ul>

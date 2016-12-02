@@ -1,4 +1,5 @@
 import { combineReducers } from 'redux';
+import { union } from 'lodash';
 
 const createDispute = (state, action) => {
   switch (action.type) {
@@ -35,7 +36,7 @@ const byId = (state = {}, action) => {
 const allIds = (state = [], action) => {
   switch (action.type) {
     case 'FETCH_DISPUTE':
-      return [...state, action.data.result]
+      return union(state, action.data.result);
     case 'ADD_DISPUTE':
       return [...state, action.id];
     default:
