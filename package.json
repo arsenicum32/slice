@@ -60,12 +60,15 @@
     "d3": "^4.4.0",
     "d3-flextree": "^1.0.3",
     "domready": "^1.0.8",
+    "gulp-eslint": "^3.0.1",
     "history": "^2.0.1",
     "little-loader": "^0.2.0",
     "react": "^0.14.7",
     "react-dom": "^0.14.7",
     "react-router": "^2.0.0",
-    "redbox-react": "^1.2.3"
+    "redbox-react": "^1.2.3",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^2.4.0"
   },
   "engines": {
     "node": "4.1.1"
