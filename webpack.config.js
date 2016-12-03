@@ -1,6 +1,7 @@
 var path = require('path');
 var webpack = require('webpack');
 var ExtractTextPlugin = require ('extract-text-webpack-plugin');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
 
 module.exports = {
   devtool: 'source-map',
@@ -14,10 +15,7 @@ module.exports = {
     filename: 'bundle.js'
   },
   plugins: [
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoErrorsPlugin(),
-    new ExtractTextPlugin('bundle.css')
   ],
   module: {
     loaders: [
@@ -43,6 +41,7 @@ module.exports = {
      }, {
        test: /\.png$/,
        loader: 'file-loader?name=images/[name].[ext]?[hash]'
-     }]
+     },
+   ]
    }
 }
