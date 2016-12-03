@@ -12,13 +12,13 @@ import disputeModel from './models/dispute';
 var app = require('express')();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
-server.listen(8081);
+server.listen(80);
 
 const compiler = webpack(config)
 app.use(webpackDevMiddleware(compiler, { noInfo: true, publicPath: config.output.publicPath }))
 app.use(webpackHotMiddleware(compiler))
 
-app.listen(1337, ()=>{
+app.listen(3000, ()=>{
   console.log('Server started on port 3000');
 });
 
