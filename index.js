@@ -1,25 +1,10 @@
-/*
-Скрипт регистрации пользователя в mongoDB от 25.11.2016.
-
-db.collectionName.find()
-show dbs
-use <db name>
-
-show collections
-show tables
-db.getCollectionNames()
-
-db.collection.drop() // Удалить записи
-https://docs.mongodb.com/v3.0/reference/method/db.collection.drop/
-https://docs.mongodb.com/v3.2/reference/mongo-shell/
-
-User.findOne({$or:[{login:login},{email:email}]},(e,user_object)=>{});
-*/
 const SETTINGS={
 	mongoDB:{// default: host=localhost,port=27017,db=test
-		host:'',
-		port:'',
-		db:''
+		host:'ds113668.mlab.com',
+		port:'13668',
+		db:'slice',
+		user:'slice',
+		pass:'slice'
 	},
 	express:{
 		port:5000// default: 8080
@@ -39,15 +24,23 @@ userSchema=new mongoose.Schema({
 	login:{type:String,required:true,unique:true},
 	password:{type:String,required:true},
 	nickname:String
-}),User=mongoose.model('User',userSchema);
-mongoose.connect('mongodb://'+(SETTINGS.mongoDB.host || 'localhost')+':'+(SETTINGS.mongoDB.port || 27017)+'/'+(SETTINGS.mongoDB.db || 'test'));
-this.validMyDate=params=>{// params:{login,nickname,pass,email}
+}),
+fightSchema=new mongoose.Schema({
+	ownerid:{type:String,required:true},
+	endtime:{type:Number,required:true},
+	time:{type:Number,required:true},
+	size:{type:Number,required:true},
+	desc:{type:Object,required:true}
+}),
+User=mongoose.model('User',userSchema),
+fight=mongoose.model('fight',fightSchema);
+mongoose.connect('mongodb://'+SETTINGS.mongoDB.user+':'+SETTINGS.mongoDB.pass+'@'+(SETTINGS.mongoDB.host || 'localhost')+':'+(SETTINGS.mongoDB.port || 27017)+'/'+(SETTINGS.mongoDB.db || 'test'));
+this.validMyDate=params=>{
 	let codes=[];
 	if(params.login===''||params.password===''||params.nickname==='')codes.push(0);
 	else{
 		(undefined!==params.login && (typeof params.login!=='string' || params.login.length<7 || params.login.length>20 || params.login!==params.login.replace(/[^\w\d_-]/gi,'')))&&codes.push(1);
 		(undefined!==params.password && (typeof params.password!=='string' || params.password.length<7))&&codes.push(2);
-		//(undefined!==params.email && (typeof params.email!=='string' || params.email.indexOf('@')===-1 || params.email.indexOf('.')===-1))&&codes.push(3);
 		(undefined!==params.nickname && (typeof params.nickname!=='string' || params.nickname.length<3))&&codes.push(4);
 	}
 	return codes.length>0?{success:false,codes:codes}:{success:true};
@@ -72,23 +65,16 @@ passport.deserializeUser((id,cb)=>User.findOne({_id:id},(e,user)=>{
 	cb(user);
 }));
 this.structure={
-	"register":(request,res)=>{// {success:true|false,codes:...}
+	"register":(request,res)=>{
 		var nickname=request.query.nickname||'',
 			login=request.query.login||'',
 			email=request.query.email||'',
 			password=request.query.password||'';
 		var valid=this.validMyDate({login:login,password:password,email:email,nickname:nickname});
 		if(!valid.success)res.end(JSON.stringify(valid));
-		else
-		(new User({password:password,nickname:nickname,login:login})).save(e=>{ // email:email,
-			if(e){
-				let lol=e.message.replace(/^[^"]+"([^"]+)".+/,'$1');
-				console.log(lol);
-				res.end("{success:false,codes:["+(e.name==='MongoError'&&e.message.indexOf('duplicate key error collection')!==-1?(lol==email?6:8):5)+"]}")
-			}else{
-				// Успешная регистрация
-				res.redirect('/login?loginmail='+email+'&password='+password);
-			}
+		else(new User({password:password,nickname:nickname,login:login})).save(e=>{
+			if(e)	res.end("{success:false,codes:["+(e.name==='MongoError'&&e.message.indexOf('duplicate key error collection')!==-1?8:5)+"]}")
+			else	res.redirect('/login?loginmail='+email+'&password='+password);// Успешная регистрация
 		});
 	},
 	"login":(request,res,next)=>{
@@ -99,7 +85,27 @@ this.structure={
 			else res.end(info.message);
 		})(request,res,next);
 	},
-	"errors":(req,res)=>res.end(JSON.stringify(this.ErrorDescriptions))
+	"errors":(req,res)=>res.end(JSON.stringify(this.ErrorDescriptions)),
+	"getAllFights":(request,res)=>{ // query.flag=cn/ru/ua/.. - флаг языка спора
+		fight.find({},(e,data)=>{
+			if(e){
+				res.end('{success:false,error:'+JSON.stringify(e)+'}');
+				console.log(e);return
+			}
+			var arr='[';
+			for(var i=data.length-1;i>-1;--i){arr+='{id:'+data[i]._id+',name:'+data[i].desc[request.query.flag]||data[i].desc['en']+',size:'+data[i].size+'},'}
+			res.end(arr.substr(0,arr.length-1)+']');
+		})
+	},
+	"addFight":(request,res)=>{
+		var fl=request.query.flag||'en';
+		var object={};
+		object[fl]=[request.query.name,request.query.text];
+		(new fight({ownerid:request.query.ownerid,time:request.query.time,desc:object,endtime:request.query.endtime,size:0})).save((e,data)=>{
+			if(e)res.end('{success:false,error:'+JSON.stringify(e)+'}');
+			else res.end('{success:true,data:'+JSON.stringify(data)+'}');
+		});
+	}
 }
 
 var app=(require('express'))();
@@ -107,31 +113,5 @@ app.use(passport.initialize());
 app.use(passport.session());
 for(let i in this.structure){
 app.get("/"+i+"/",this.structure[i])}
-
 const port=SETTINGS.express.port||8080;
 app.listen(port,_=>console.log('Listening on '+port));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
