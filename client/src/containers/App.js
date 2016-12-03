@@ -4,8 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import { Link } from 'react-router';
 import * as disputeActions from '../actions/dispute';
-import Header from '../components/header';
-
+import Header from '../components/header/header';
 
 class App extends Component {
   handleSubmit(data){
@@ -20,7 +19,6 @@ class App extends Component {
   render() {
     const { dispute, disputeActions } = this.props;
     return <div>
-      <h1>Navbar might be here</h1>
       < Header />
       <div>{React.cloneElement(this.props.children, {...this.props, actions: disputeActions.fetchDispute, dispute: dispute, onSubmit: this.handleSubmit})}</div>
     </div>

@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 import styles from './header.styl';
+
 class Header extends Component {
   render(){
     return <div className={styles.header}>
-      <Link id="test" to="/dispute">Show all disputes</Link><br/>
-      <Link to="/">Create new dispute</Link>
+    <ul>
+      <li><Link to="/dispute">All disputes</Link></li>
+      <li><Link to="/">Create new dispute</Link></li>
+      <li style={{float: "right"}}><Link to="/profile">Profile</Link></li>
+    </ul>
     </div>
+
   }
 }
 
