@@ -7,6 +7,7 @@ import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import Dispute from './components/disputeCreation/dispute';
 import DisputeAll from './components/allDisputes/disputeAll';
 import Profile from './components/profile/profile';
+import Login from './components/Login/Login';
 import { syncHistoryWithStore } from 'react-router-redux';
 
 const store = configureStore();
@@ -19,7 +20,7 @@ render(
       <Route path="/" component={App} >
         <IndexRoute component={Dispute} />
         <Route path="/dispute" component={DisputeAll} />
-        <Route path="/profile" component={Profile} />
+        <Route path="/profile" component={Login} />
       </Route>
     </Router>
   </Provider>,

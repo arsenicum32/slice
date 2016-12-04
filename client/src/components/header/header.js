@@ -4,13 +4,14 @@ import styles from './header.styl';
 
 class Header extends Component {
   render(){
-    return <div className={styles.header}>
-    <ul>
-      <li><Link to="/dispute">All disputes</Link></li>
-      <li><Link to="/">Create new dispute</Link></li>
-      <li style={{float: "right"}}><Link to="/profile">Profile</Link></li>
-    </ul>
-    </div>
+    return <header className={styles.header}>
+      <div className={styles.logo}>s / <b>i</b> c e</div>
+      <div className={styles.menu}>
+        <Link to="/dispute" className={styles.sm} >All disputes</Link>
+        <Link to="/" className={styles.sm} >Create new dispute</Link>
+        <Link to="/profile" className={styles.im}>Я</Link>
+      </div>
+    </header>
 
   }
 }
