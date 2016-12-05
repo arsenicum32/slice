@@ -22,7 +22,7 @@ class Fight extends React.Component {
         <p>пару предложений о регламенте пари, сроках проведения и свякой прочей хуерги которую можно развернуть и почитать очень подробно по ссылке<span> <a href="#">подробнее</a></span></p>
       </div>
       <div className={stl.body}>
-        <h1><a href="#">Маша
+        <h1><a href="#">Тест
             </a><span>&nbsp; VS &nbsp;</span><a href="#">Петя
             </a></h1>
         <div className={stl.sides}>
