@@ -1,7 +1,7 @@
 {
-  "name": "react-stylus-webpack-boilerplate",
+  "name": "slice",
   "version": "0.1.0",
-  "description": "A starter kit for creating applications using react and stylus, client side rendering, development and production configurations and hot reloading",
+  "description": "test",
   "scripts": {
     "dev": "gulp serve",
     "build": "gulp build",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/AlejoFernandez/react-stylus-webpack-boilerplate.git"
+    "url": "git+https://github.com/arsenicum32/slice.git"
   },
   "keywords": [
     "react",
@@ -20,12 +20,8 @@
     "starter",
     "kit"
   ],
-  "author": "Alejo Fernandez (alejo.fernandez@gmail.com)",
+  "author": "Alejo Fernandez",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/AlejoFernandez/react-stylus-webpack-boilerplate/issues"
-  },
-  "homepage": "https://github.com/AlejoFernandez/react-stylus-webpack-boilerplate#readme",
   "devDependencies": {
     "autoprefixer-loader": "^3.1.0",
     "babel-core": "^6.7.6",
