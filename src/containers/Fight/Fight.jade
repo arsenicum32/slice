@@ -1,0 +1,58 @@
+div(class=styles.slice)
+  div(class=styles.top)
+    div(class=styles.feedback)
+      span 120
+      a(href='#') 👍
+      a(href='#') 👎
+      span 0
+    h1 СПОР на погоду
+    div(class=styles.smart)
+      h3(class=styles.cp) в споре:
+        br
+        span 1.000 $
+      h3(class=styles.cl) до закрытия:
+        br
+        span 00:30:55
+    p пару предложений о регламенте пари, сроках проведения и свякой прочей хуерги которую можно развернуть и почитать очень подробно по ссылке
+      span
+        a(href='#') подробнее
+  div(class=styles.body)
+    h1
+      a(href='#') Маша
+        //img(src='https://randomuser.me/api/portraits/women/10.jpg')
+      span &nbsp; VS &nbsp;
+      a(href='#') Петя
+        //img(src='https://randomuser.me/api/portraits/men/10.jpg')
+    div(class=styles.sides)
+      div(class=styles.side1)
+        div(class="#{styles.ts} #{styles.lr}") ЗА
+        div(class=styles.chat)
+          div(class=styles.nam) обсуждение
+          div(class=styles.mesblock)
+            - for (var i=0;i<10;i++)
+              div(class=styles.mes)
+                small от
+                  a(href='#') Маши
+                p ставка 20$
+        div(class=styles.users)
+          div(class=styles.nam) игроки 21 чел
+          div(class=styles.content)
+            - for (var i=0;i<10;i++)
+              div(class=styles.us)
+                img(src='https://randomuser.me/api/portraits/women/#{i}.jpg')
+                span=Math.floor(Math.random()*30+1)+"$"
+        div(class=styles.calc)
+          div(class=styles.nam) сделать ставку
+          div(class=styles.content)
+            input(placeholder='текст...')
+            span ⬈120฿
+      div(class=styles.side2)
+        div(class=[styles.ts,styles.lf]) ПРОТИВ
+        div(class=styles.chat)
+          div(class=styles.nam) обсуждение
+        div(class=styles.users)
+          div(class=styles.nam) игроки
+        div(class=styles.calc)
+          div(class=styles.nam) сделать ставку
+   div(class=styles.bottom)
+     p что-нибудь про пожаловаться на спор
