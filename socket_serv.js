@@ -8,7 +8,7 @@ const SETTINGS={
 		pass:'slice'
 	}
 };
-this.ErrorDescriptions={// Êîäû îøèáîê. Â îòâåòå âñåãäà êîäû, à íå òåêñòû. ïîëó÷èòü ñïèñîê ìîæíî ÷åðåç api
+this.ErrorDescriptions={// ÐšÐ¾Ð´Ñ‹ Ð¾ÑˆÐ¸Ð±Ð¾Ðº. Ð’ Ð¾Ñ‚Ð²ÐµÑ‚Ðµ Ð²ÑÐµÐ³Ð´Ð° ÐºÐ¾Ð´Ñ‹, Ð° Ð½Ðµ Ñ‚ÐµÐºÑÑ‚Ñ‹. Ð¿Ð¾Ð»ÑƒÑ‡Ð¸Ñ‚ÑŒ ÑÐ¿Ð¸ÑÐ¾Ðº Ð¼Ð¾Ð¶Ð½Ð¾ Ñ‡ÐµÑ€ÐµÐ· api
 	0:'Missing credentials',
 	1:'invalid login',
 	2:'invalid password',
@@ -65,8 +65,8 @@ passport.use('local',new LocalStrategy({usernameField:'login'},(login,password,c
 	if(!this.validMyDate(A).success)cb('{success:false,codes:[7]}');
 	else User.findOne(A,(e,usr)=>{
 		if(e)cb('{success:false,codes:[5]}')
-		else if(!usr)cb('{success:false,codes:[7]}');	// Ïîëüçîâàòåëü íå íàéäåí
-		else cb('{success:true,id:"'+usr.id+'"}');	// Ïîëüçîâàòåëü íàéäåí
+		else if(!usr)cb('{success:false,codes:[7]}');	// ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ðµ Ð½Ð°Ð¹Ð´ÐµÐ½
+		else cb('{success:true,id:"'+usr.id+'"}');	// ÐŸÐ¾Ð»ÑŒÐ·Ð¾Ð²Ð°Ñ‚ÐµÐ»ÑŒ Ð½Ð°Ð¹Ð´ÐµÐ½
 	});
 	
 }));
@@ -87,7 +87,7 @@ this.structure={
 		console.log({password:password,nickname:nickname,login:login});
 		var valid=this.validMyDate({login:login,password:password,nickname:nickname});
 		if(!valid.success)cb(JSON.stringify(valid));
-		else(new User({password:password,nickname:nickname,login:login})).save().then(_=>this.structure.login({query:{login:login,password:password}},cb))// Óñïåøíàÿ ðåãèñòðàöèÿ
+		else(new User({password:password,nickname:nickname,login:login})).save().then(_=>this.structure.login({query:{login:login,password:password}},cb))// Ð£ÑÐ¿ÐµÑˆÐ½Ð°Ñ Ñ€ÐµÐ³Ð¸ÑÑ‚Ñ€Ð°Ñ†Ð¸Ñ
 		.catch(e=>cb("{success:false,codes:["+(e.name==='MongoError'&&e.message.indexOf('duplicate key error collection')!==-1?8:5)+"]}"));
 	},
 	"login":(request,cb)=>{
@@ -98,7 +98,7 @@ this.structure={
 		passport.authenticate('local',data=>cb(data))(request);
 	},
 	"getCodes":(req,cb)=>cb(JSON.stringify(this.ErrorDescriptions)),
-	"getAllFights":(request,cb)=>{ // query.flag=cn/ru/ua/.. - ôëàã ÿçûêà ñïîðà
+	"getAllFights":(request,cb)=>{ // query.flag=cn/ru/ua/.. - Ñ„Ð»Ð°Ð³ ÑÐ·Ñ‹ÐºÐ° ÑÐ¿Ð¾Ñ€Ð°
 		fight.find({},(e,data)=>{
 			if(e){
 				cb('{success:false,error:'+JSON.stringify(e)+'}');
