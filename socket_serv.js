@@ -1,4 +1,14 @@
-var io = require('socket.io').listen(8080); 
+var cookieParser = require('cookie-parser');
+const cookie = require('cookie');//Разные вещи,для разных вещей служат
+
+var express = require("express");
+var Server = require("http").Server;
+var session = require("express-session");
+
+var app = express();
+var server = Server(app);
+var io = require('socket.io')(server)
+
 const SETTINGS={
 	mongoDB:{// default: host=localhost,port=27017,db=test
 		host:'ds113668.mlab.com',
@@ -8,6 +18,7 @@ const SETTINGS={
 		pass:'slice'
 	}
 };
+
 this.ErrorDescriptions={// Коды ошибок. В ответе всегда коды, а не тексты. получить список можно через api
 	0:'Missing credentials',
 	1:'invalid login',
@@ -17,24 +28,82 @@ this.ErrorDescriptions={// Коды ошибок. В ответе всегда �
 	7:'user don\'t find',
 	8:'login already used',
 };
-var mongoose=require('mongoose'),
-userSchema=new mongoose.Schema({
-	login:{type:String,required:true,unique:true},
-	password:{type:String,required:true},
-	nickname:String
-}),
-fightSchema=new mongoose.Schema({
-	ownerid:{type:String,required:true},
-	endtime:{type:Number,required:true},
-	time:{type:Number,required:true},
-	size:{type:Number,required:true},
-	desc:{type:Object,required:true}
-}),fight=mongoose.model('fight',fightSchema),
-User=mongoose.model('Users',userSchema);
+
+var mongoose = require('mongoose'),
+		userSchema = new mongoose.Schema({
+			login:{type:String,required:true,unique:true},
+			password:{type:String,required:true},
+			nickname:String
+		}),
+		fightSchema = new mongoose.Schema({
+			ownerid:{type:String,required:true},
+			endtime:{type:Number,required:true},
+			time:{type:Number,required:true},
+			size:{type:Number,required:true},
+			desc:{type:Object,required:true}
+		}),
+		fight = mongoose.model('fight',fightSchema),
+		User = mongoose.model('Users',userSchema);
+
+var sessionSchema = new mongoose.Schema({
+  		sid:{type:String,required:true,unique:true}
+		}),
+		sessionModel=mongoose.model('session',sessionSchema);
+
+var ss = new sessionModel({ sid: 'fuckqwe123123' });
+
+
 mongoose.Promise = global.Promise;
 mongoose.connect('mongodb://'+SETTINGS.mongoDB.user+':'+SETTINGS.mongoDB.pass+'@'+(SETTINGS.mongoDB.host || 'localhost')+':'+(SETTINGS.mongoDB.port || 27017)+'/'+(SETTINGS.mongoDB.db || 'test'));
 
+const MongoStore = require('connect-mongo')(session);
+var str = new MongoStore({ mongooseConnection: mongoose.connection })
+
+var sessionMiddleware = session({
+    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    secret: "keyboard cat",
+    saveUninitialized: true,
+    key:"fuck",
+     resave: true
+});
+
+io.use(function(socket, next) {
+    sessionMiddleware(socket.request, socket.request.res, next);
+});
+
+app.use(sessionMiddleware);
+
+io.use(function(socket, next) {
+    var handshakeData = socket.request;
+    handshakeData.cookies = handshakeData.headers.cookie;
+    var sidCookie1 = cookie.parse(handshakeData.cookies);
+    var sidCookie = sidCookie1["fuck"]
+
+    var sid = cookieParser.signedCookie(sidCookie, "keyboard cat");
+    if(!sid){
+        console.log('Not session found');
+    }
+
+    str.get(sid,function (error,resp) {
+      if(error){
+          console.log("not auth");
+            next(new Error('not authorized'));
+
+        }else if(resp){
+              console.log("auth");
+              socket.handshake.user = resp;
+              next();
+          }else
+          {
+              console.log("not auth");
+              next(new Error('not authorized'));
+          }
+
+    })
+});
+
 io.sockets.on('connection',socket=>{
+
 	for(let i in this.structure){
 	socket.on(i,req=>{
 		console.log(i,req);
@@ -42,10 +111,10 @@ io.sockets.on('connection',socket=>{
 			socket.emit(i,_)
 			console.log('callback',i,_);
 		})
-	
+
 	})}
 });
-					
+
 this.validMyDate=params=>{
 	let codes=[];
 	if(params.login===''||params.password===''||params.nickname==='')codes.push(0);
@@ -68,13 +137,13 @@ passport.use('local',new LocalStrategy({usernameField:'login'},(login,password,c
 		else if(!usr)cb('{success:false,codes:[7]}');	// Пользователь не найден
 		else cb('{success:true,id:"'+usr.id+'"}');	// Пользователь найден
 	});
-	
 }));
 
 passport.deserializeUser((id,cb)=>User.findOne({_id:id},(e,user)=>{
 	if(e)log(e);
 	cb(user);
 }));
+
 this.structure={
 	"register":(request,cb)=>{
 		if(!request||!request.query){
@@ -124,3 +193,11 @@ this.structure={
 		});
 	}
 }
+
+app.post('/fuck',function (req,res) {//тестовая хуйня,которая присылает sid сессии в express и эту сессию сохранеяет
+  res.send(req.session.id);
+  req.session.save(function(err) {
+	});
+})
+
+server.listen(8080);
